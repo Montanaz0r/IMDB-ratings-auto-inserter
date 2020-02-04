@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
+import logging
 
 
 def login_phase(driver):
@@ -47,7 +48,7 @@ def picking_movie_phase(driver, movie_title):
     try:
         movie_page = driver.find_element_by_link_text(movie_title)
     except NoSuchElementException:
-        print(f'Could not find any movie that matches search for: {movie_title}')
+        logging.info(f'Could not find any movie that matches search for: {movie_title}')
     else:
         movie_page.click()
 
@@ -56,15 +57,18 @@ def rate_the_movie(driver, movie_title, rate):
     try:
         rate_pool = driver.find_element(By.CSS_SELECTOR, "#star-rating-widget > div")
     except NoSuchElementException:
-        print(f'Could not find rating pool for: {movie_title}')
+        logging.info(f'Could not find rating pool for: {movie_title}')
+        return False
     else:
         rate_pool.click()
         try:
             star_rate = driver.find_element_by_xpath(f'//*[@title="Click to rate: {rate}"]')
         except NoSuchElementException:
-            print(f'Could not find start pool for: {movie_title} and rate of: {rate}')
+            logging.info(f'Could not find start pool for: {movie_title} and rate of: {rate}')
+            return False
         else:
             star_rate.click()
+        return True
 
 
 
