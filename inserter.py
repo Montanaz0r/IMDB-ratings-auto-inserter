@@ -48,7 +48,20 @@ def picking_movie_phase(driver, movie_title):
     try:
         movie_page = driver.find_element_by_link_text(movie_title)
     except NoSuchElementException:
-        logging.info(f'Could not find any movie that matches search for: {movie_title}')
+        try:
+            movie_page = driver.find_element_by_xpath(f"//a[contains(text(),'{movie_title[0:5]}')]")
+        except NoSuchElementException:
+            try:
+                href = driver.find_element_by_xpath('//*[@id="main"]/div/div[2]/table/tbody/tr/td[2]/a')
+                movie_url = href.get_attribute('href')
+            except NoSuchElementException:
+                logging.info(f'Could not find any movie that matches search for: {movie_title}')
+            else:
+                print(movie_url)
+                driver.get(movie_url)
+        else:
+            movie_page.click()
+
     else:
         movie_page.click()
 
@@ -67,6 +80,7 @@ def rate_the_movie(driver, movie_title, rate):
             logging.info(f'Could not find start pool for: {movie_title} and rate of: {rate}')
             return False
         else:
+            driver.implicitly_wait(1)
             star_rate.click()
         return True
 
