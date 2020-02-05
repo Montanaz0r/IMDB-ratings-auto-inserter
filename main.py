@@ -7,7 +7,7 @@ import logging
 logging.basicConfig(filename='imdb.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
 # loading file with movie ratings as DataFrame from file
-df = pd.read_pickle('ratings4.pkl')
+# df = pd.read_pickle('ratings4.pkl')
 
 # path to webdriver
 wb_path = 'chromedriver.exe'
@@ -28,6 +28,9 @@ def perform_insertion(data):
 
 
 if __name__ == '__main__':
+    print('Please type path to the data file.')
+    filename = input()
+    df = pd.read_pickle(filename)
     perform_insertion(df)
 
 
