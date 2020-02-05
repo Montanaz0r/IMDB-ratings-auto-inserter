@@ -6,25 +6,25 @@ import logging
 # Initialize logging file
 logging.basicConfig(filename='imdb.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
-# loading file with movie ratings as DataFrame from file
-# df = pd.read_pickle('ratings4.pkl')
-
 # path to webdriver
 wb_path = 'chromedriver.exe'
 driver = webdriver.Chrome(executable_path=wb_path)
 
 
 def perform_insertion(data):
-    inserter.login_phase(driver)
+    """
+    @param data: pandas DataFrame
+    @return: None
+    Performs all the steps of finding movie, opening movie card and rating movie for each movie passed in the file.
+    """
+    inserter.login_phase(driver)   # Step 1 - logging in
     for index, row in data.iterrows():
-        movie_title = row['title']
-        rate = str(int(row['rating']))
-        inserter.searching_phase(driver, movie_title)
-        inserter.picking_movie_phase(driver, movie_title)
-        if inserter.rate_the_movie(driver, movie_title, rate):
+        movie_title = row['title']         # make sure DataFrame you are passing in has column named 'title'
+        rate = str(int(row['rating']))     # make sure DataFrame you are passing in has column named 'rating'
+        inserter.searching_phase(driver, movie_title)   # Step 2 - searching for a certain movie
+        inserter.picking_movie_phase(driver, movie_title)   # Step 3 - picking the right movie card
+        if inserter.rate_the_movie(driver, movie_title, rate):   # Step 4 - rating the movie
             print(f'Successfully update rating for {movie_title} with rating: {rate}')
-            row['scraped'] = 'Yes'
-    data.to_csv('ratings_updated.csv')
 
 
 if __name__ == '__main__':

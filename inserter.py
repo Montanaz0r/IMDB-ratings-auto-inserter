@@ -9,9 +9,8 @@ import logging
 
 def login_phase(driver):
     """
-    :params: driver
-    :returns: None
-    taking care of opening main page and waiting for user in order to log in
+    @param driver: webdriver instance
+    @return: None
     """
     driver.get("https://www.imdb.com/")
     try:
@@ -38,6 +37,11 @@ def login_phase(driver):
 
 
 def searching_phase(driver, movie_title):
+    """
+    @param driver: webdriver instance
+    @param movie_title: string
+    @return: None
+    """
     searching_bar = driver.find_element(By.CSS_SELECTOR, '#suggestion-search')
     searching_bar.click()
     searching_bar.send_keys(movie_title)
@@ -45,6 +49,11 @@ def searching_phase(driver, movie_title):
 
 
 def picking_movie_phase(driver, movie_title):
+    """
+    @param driver: webdriver instance
+    @param movie_title: string
+    @return: None
+    """
     try:
         movie_page = driver.find_element_by_link_text(movie_title)
     except NoSuchElementException:
@@ -57,7 +66,6 @@ def picking_movie_phase(driver, movie_title):
             except NoSuchElementException:
                 logging.info(f'Could not find any movie that matches search for: {movie_title}')
             else:
-                print(movie_url)
                 driver.get(movie_url)
         else:
             movie_page.click()
@@ -67,6 +75,12 @@ def picking_movie_phase(driver, movie_title):
 
 
 def rate_the_movie(driver, movie_title, rate):
+    """
+    @param driver: webdriver instance
+    @param movie_title: string
+    @param rate: string
+    @return: None
+    """
     try:
         rate_pool = driver.find_element(By.CSS_SELECTOR, "#star-rating-widget > div")
     except NoSuchElementException:
