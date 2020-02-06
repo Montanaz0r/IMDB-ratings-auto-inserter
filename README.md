@@ -33,7 +33,7 @@ In a quick tutorial section, you can find more useful information regarding pote
 
 Save your data as a .pkl file (this can be generated with Pandas). **Make sure that the column name with your movies is named *title*
 and ratings are in column named *rating* (you do not need to change datatype in this column, script will automatically convert
-all ratings to strings).
+all ratings to strings).**
 
 There is a file named: ratings4.pkl in my respository. You can use this data to play/test the script.
 
